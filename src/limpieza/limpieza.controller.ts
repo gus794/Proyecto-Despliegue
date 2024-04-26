@@ -1,7 +1,16 @@
-import { Controller, Get, Post, Body, Patch, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  UseGuards,
+} from '@nestjs/common';
 import { LimpiezaService } from './limpieza.service';
 import { CreateLimpiezaDto } from './dto/create-limpieza.dto';
 import { UpdateLimpiezaDto } from './dto/update-limpieza.dto';
+import { AuthGuard } from 'src/auth/auth.guard';
 
 @Controller('limpieza')
 export class LimpiezaController {
@@ -12,6 +21,7 @@ export class LimpiezaController {
     return this.limpiezaService.getHabsCleanToday();
   }
 
+  @UseGuards(AuthGuard)
   @Post()
   create(@Body() createLimpiezaDto: CreateLimpiezaDto) {
     return this.limpiezaService.create(createLimpiezaDto);
@@ -22,6 +32,7 @@ export class LimpiezaController {
     return this.limpiezaService.findAll();
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
   update(
     @Param('id') id: string,

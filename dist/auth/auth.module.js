@@ -6,27 +6,28 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.AppModule = void 0;
+exports.AuthModule = void 0;
 const common_1 = require("@nestjs/common");
-const app_controller_1 = require("./app.controller");
-const app_service_1 = require("./app.service");
-const limpieza_module_1 = require("./limpieza/limpieza.module");
-const mongoose_1 = require("@nestjs/mongoose");
-const usuario_module_1 = require("./usuario/usuario.module");
-const auth_module_1 = require("./auth/auth.module");
-let AppModule = class AppModule {
+const auth_controller_1 = require("./auth.controller");
+const auth_service_1 = require("./auth.service");
+const usuario_module_1 = require("../usuario/usuario.module");
+const jwt_1 = require("@nestjs/jwt");
+let AuthModule = class AuthModule {
 };
-exports.AppModule = AppModule;
-exports.AppModule = AppModule = __decorate([
+exports.AuthModule = AuthModule;
+exports.AuthModule = AuthModule = __decorate([
     (0, common_1.Module)({
         imports: [
-            limpieza_module_1.LimpiezaModule,
-            mongoose_1.MongooseModule.forRoot('mongodb://127.0.0.1/hotel'),
             usuario_module_1.UsuarioModule,
-            auth_module_1.AuthModule,
+            jwt_1.JwtModule.register({
+                global: true,
+                secret: 'mi_palabra_secreta',
+                signOptions: { expiresIn: '2h' },
+            }),
         ],
-        controllers: [app_controller_1.AppController],
-        providers: [app_service_1.AppService],
+        controllers: [auth_controller_1.AuthController],
+        providers: [auth_service_1.AuthService],
+        exports: [auth_service_1.AuthService],
     })
-], AppModule);
-//# sourceMappingURL=app.module.js.map
+], AuthModule);
+//# sourceMappingURL=auth.module.js.map
